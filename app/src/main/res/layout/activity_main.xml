@@ -170,7 +170,7 @@
             android:layout_weight="1"
             android:layout_margin="1dp"
             android:text="."
-            android:onClick="onDigit"
+            android:onClick="onDecimalPoint"
             />
         <Button
             android:id="@+id/btnZero"
@@ -188,7 +188,7 @@
             android:layout_weight="1"
             android:layout_margin="1dp"
             android:text="CLR"
-            android:onClick="onDigit"
+            android:onClick="onClear"
             />
         <Button
             android:id="@+id/btnAdd"
