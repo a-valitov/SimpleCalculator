@@ -7,6 +7,8 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
+<!--    TODO: Create a style for buttons https://developer.android.com/guide/topics/ui/look-and-feel/themes-->
+
     <TextView
         android:id="@+id/tvInput"
         android:layout_width="match_parent"
@@ -14,7 +16,9 @@
         android:background="@color/digitsBackground"
         android:textSize="48sp"
         android:maxLength="12"
-        />
+        android:padding="10dp"
+        android:text="0"
+        android:gravity="right|center_vertical|bottom" />
 
     <!--  Row1  -->
     <LinearLayout
@@ -213,8 +217,18 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_margin="1dp"
+            android:layout_weight="1"
             android:text="="
             android:onClick="onEqual"
+            />
+        <Button
+            android:id="@+id/btnBackspace"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="3"
+            android:text="⌫"
+            android:onClick="onBackspace"
             />
     </LinearLayout>
 

@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onDigit(view: View) {
+
+        if(tvInput.text.toString() == "0") {
+            tvInput.text = ""
+        }
+
         tvInput.append((view as Button).text)
         lastNumeric = true
 
@@ -53,10 +58,10 @@ class MainActivity : AppCompatActivity() {
                     tvValue = tvValue.substring(1)  // throw away the 1st character in the string
                 }
 
+                // SUBTRACTION
                 if (tvValue.contains("-")){
                     val splitValue = tvValue.split("-")
-//                    var one = splitValue[splitValue.size - 2]
-//                    var two = splitValue[splitValue.size - 1]
+
                     var one = splitValue[0]
                     var two = splitValue[1]
 
@@ -64,9 +69,57 @@ class MainActivity : AppCompatActivity() {
                         one = prefix + one
                     }
 
-                    tvInput.text = (one.toDouble() - two.toDouble()).toString()
+                    val result : String = (one.toDouble() - two.toDouble()).toString()
+                    tvInput.text = removeZerosAfterDot(result)
                 }
 
+                // ADDITION
+                if (tvValue.contains("+")){
+                    val splitValue = tvValue.split("+")
+
+                    var one = splitValue[0]
+                    var two = splitValue[1]
+
+                    if(prefix.isNotEmpty()) {
+                        one = prefix + one
+                    }
+
+                    val result : String = (one.toDouble() + two.toDouble()).toString()
+                    tvInput.text = removeZerosAfterDot(result)
+                }
+
+                // MULTIPLICATION
+                if (tvValue.contains("*")){
+                    val splitValue = tvValue.split("*")
+
+                    var one = splitValue[0]
+                    var two = splitValue[1]
+
+                    if(prefix.isNotEmpty()) {
+                        one = prefix + one
+                    }
+
+                    val result : String = (one.toDouble() * two.toDouble()).toString()
+                    tvInput.text = removeZerosAfterDot(result)
+                }
+
+                // DIVISION
+                if (tvValue.contains("/")){
+                    val splitValue = tvValue.split("/")
+
+                    var one = splitValue[0]
+                    var two = splitValue[1]
+
+                    if(prefix.isNotEmpty()) {
+                        one = prefix + one
+                    }
+
+                    val result : String = (one.toDouble() / two.toDouble()).toString()
+                    tvInput.text = removeZerosAfterDot(result)
+                }
+
+                //TODO: when result with a dot is shown, forbid user to input another dot
+                //i.e.   0.7 -> 0.7.7
 
             } catch (e: ArithmeticException) {
                 e.printStackTrace()
@@ -82,6 +135,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun onBackspace(view: View) {
+
+        var result = tvInput.text
+
+        if (result.length == 0) {
+            return
+        }
+
+        if (result.length == 1) {
+            tvInput.text = "0"
+            return
+        }
+
+        result = tvInput.text.dropLast(1)
+        val last = result.last()
+        if (last.equals(".")) {
+            lastDot = true
+            lastNumeric = false
+        } else if (last.isDigit()) {
+            lastNumeric = true
+            lastDot = false
+        }
+        tvInput.text = result
+    }
+
     private fun isOperatorAdded(value: String) : Boolean {
         return if (value.startsWith("-")) {
             false
@@ -89,6 +167,15 @@ class MainActivity : AppCompatActivity() {
             value.contains("/") || value.contains("*")
                     || value.contains("+") || value.contains("-")
         }
+    }
+
+    private fun removeZerosAfterDot(result: String) : String {
+        var value = result
+        if(result.endsWith(".0")) {
+            value = result.substring(0, result.length - 2)
+        }
+
+        return value
     }
 
 }
