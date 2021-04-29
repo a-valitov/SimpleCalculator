@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import java.lang.ArithmeticException
 
 class MainActivity : AppCompatActivity() {
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     fun onDigit(view: View) {
 
-        if(tvInput.text.toString() == "0") {
+        if((tvInput.text.toString() == "0") || (tvInput.text.toString() == "Infinity") || (tvInput.text.toString() == "NaN"))  {
             tvInput.text = ""
         }
 
@@ -34,8 +33,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClear(view: View) {
-        tvInput.text = ""
-        lastNumeric = false
+        tvInput.text = "0"
+        lastNumeric = true
         lastDot = false
     }
 
@@ -137,27 +136,32 @@ class MainActivity : AppCompatActivity() {
 
     fun onBackspace(view: View) {
 
-        var result = tvInput.text
+        var input = tvInput.text.toString()
 
-        if (result.length == 0) {
+        if (input.length == 0) {
             return
         }
 
-        if (result.length == 1) {
+        if (input.length == 1) {
             tvInput.text = "0"
             return
         }
 
-        result = tvInput.text.dropLast(1)
-        val last = result.last()
+        if ((input == "Infinity") || (input == "NaN")) {
+            tvInput.text = "0"
+            return
+        }
+
+        input = tvInput.text.dropLast(1).toString()
+        val last = input.last()
         if (last.equals(".")) {
             lastDot = true
             lastNumeric = false
         } else if (last.isDigit()) {
             lastNumeric = true
-            lastDot = false
+            //lastDot = false
         }
-        tvInput.text = result
+        tvInput.text = input
     }
 
     private fun isOperatorAdded(value: String) : Boolean {
